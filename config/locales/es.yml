@@ -1,0 +1,14 @@
+---
+es:
+  decidim:
+    admin:
+      menu:
+        export: Export
+      title:
+        export: Export
+      pages:
+        export:
+          show: Export
+    features:
+      export:
+        name:  Export

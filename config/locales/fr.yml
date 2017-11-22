@@ -1,0 +1,19 @@
+---
+fr:
+  decidim:
+    admin:
+      menu:
+        export: Export
+      title:
+        export: Export
+      pages:
+        export:
+          show: Export
+          process_download: Télécharger par process
+          download: Télécharger
+          users: Exporter les utilisateurs
+          process: Process
+          download_users: Télécharger tous les utilisateurs
+    features:
+      export:
+        name:  Export

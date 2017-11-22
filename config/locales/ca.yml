@@ -1,0 +1,11 @@
+---
+ca:
+  decidim:
+    admin:
+      menu:
+        export: Export
+      title:
+        export: Export
+    features:
+      export:
+        name:  Export
