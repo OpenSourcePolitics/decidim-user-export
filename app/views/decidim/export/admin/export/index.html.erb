@@ -5,30 +5,34 @@
     </h2>
   </div>
   <div class="card-section">
-    <div class="table-scroll">
-      <table class="table-list">
-        <thead>
-          <tr>
-            <th><%= t('decidim.admin.pages.export.process')%></th>
-            <th><%= t('decidim.admin.pages.export.process_download')%></th>
-          </tr>
-        </thead>
-        <tbody>
-          <%@participatory_process.each do |pp| %>
-          <% if pp.published?%>
+    <% if @participatory_spaces.any? %>
+      <div class="table-scroll">
+        <table class="table-list">
+          <thead>
             <tr>
-              <td>
-                  <%= translated_attribute(pp.title) %>
-              </td>
-              <td class="table-list__actions">
-                  <%= icon_link_to "data-transfer-download", export_path(format: :csv, process_id: pp.id), t('decidim.admin.pages.export.download'), class: "icon-cloud-download", target: :blank %>
-              </td>
+              <th><%= t('decidim.admin.pages.export.process')%></th>
+              <th><%= t('decidim.admin.pages.export.process_download')%></th>
             </tr>
+          </thead>
+          <tbody>
+            <%@participatory_spaces.each do |participatory_space| %>
+            <% if participatory_space.published?%>
+              <tr>
+                <td>
+                    <%= translated_attribute(participatory_space.title) %>
+                </td>
+                <td class="table-list__actions">
+                    <%= icon_link_to "data-transfer-download", export_path(format: :csv, space_id: participatory_space.id, space_type: participatory_space.class.name), t('decidim.admin.pages.export.download'), class: "icon-cloud-download", target: :blank %>
+                </td>
+              </tr>
+              <%end%>
             <%end%>
-          <%end%>
-        </tbody>
-      </table>
-    </div>
-    <%= link_to t('decidim.admin.pages.export.download_users'), export_path(format: :csv), class: "button small" %>
+          </tbody>
+        </table>
+      </div>
+      <%= link_to t('decidim.admin.pages.export.download_users'), export_path(format: :csv), class: "button small" %>
+    <%else%>
+      <p> Vous n'avez pas encore créé d'espaces de participation </p>
+    <%end%>
   </div>
 </div>
