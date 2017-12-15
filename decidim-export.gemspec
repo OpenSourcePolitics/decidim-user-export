@@ -10,9 +10,13 @@ Gem::Specification.new do |s|
   s.authors     = ["Open Source Projects"]
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
+  s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "decidim-core"
 
   s.add_development_dependency "decidim-dev"
   s.add_development_dependency "decidim-admin"
+  s.add_development_dependency "pry-byebug"
+  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'factory_girl_rails'
 end
