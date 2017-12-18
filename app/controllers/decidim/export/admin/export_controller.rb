@@ -32,9 +32,9 @@ module Decidim
         private
 
         def participatory_spaces
-          @participatory_process ||= Decidim::ParticipatoryProcess.where(organization: current_organization)
+          @participatory_process ||= Decidim::ParticipatoryProcess.where(organization: current_organization).where.not(published_at: nil)
           @assemblies ||= if Object.const_defined?('Decidim::Assembly') # Check if the gem Decidim::Assembly is active
-                             Decidim::Assembly.where(organization: current_organization)
+                             Decidim::Assembly.where(organization: current_organization).where.not(published_at: nil)
                           else
                             []
                           end

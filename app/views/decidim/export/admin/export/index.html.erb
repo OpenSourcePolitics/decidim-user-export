@@ -16,7 +16,6 @@
           </thead>
           <tbody>
             <%@participatory_spaces.each do |participatory_space| %>
-            <% if participatory_space.published?%>
               <tr>
                 <td>
                     <%= translated_attribute(participatory_space.title) %>
@@ -25,7 +24,6 @@
                     <%= icon_link_to "data-transfer-download", export_path(format: :csv, space_id: participatory_space.id, space_type: participatory_space.class.name), t('decidim.admin.pages.export.download'), class: "icon-cloud-download", target: :blank %>
                 </td>
               </tr>
-              <%end%>
             <%end%>
           </tbody>
         </table>
