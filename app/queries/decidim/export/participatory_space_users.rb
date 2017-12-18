@@ -2,7 +2,6 @@
 
 module Decidim
   module Export
-    # This query class filters published assemblies given an organization.
     class ParticipatorySpaceUsers < Rectify::Query
       def initialize(participatory_space, organization)
         @participatory_space = participatory_space
@@ -10,7 +9,10 @@ module Decidim
       end
 
       def query
-        if @participatory_space
+        if @participatory_space.nil?
+          @organization.users.uniq
+
+        else
           (get_proposals_author +
            get_proposals_followers +
            get_proposal_voters +
@@ -18,25 +20,20 @@ module Decidim
            get_comment_author +
            get_comment_voters
           ).uniq
-        else
-          @organization.users.uniq
         end
       end
 
-     def get_proposals_features
-        Decidim::Feature.where(manifest_name: :proposals, participatory_space: @participatory_space)
-      end
-
       def get_proposals
-        proposals = Decidim::Proposals::Proposal.where(feature: get_proposals_features)
+        features = @participatory_space.features.where(manifest_name: :proposals)
+        Decidim::Proposals::Proposal.where(feature: features)
       end
 
       def get_proposals_author
-         get_proposals.map(&:author)
+        get_proposals.map(&:author)
       end
 
       def get_meeting
-        features = Decidim::Feature.where(manifest_name: :meetings, participatory_space: @participatory_space)
+        features = @participatory_space.features.where(manifest_name: :meetings)
         Decidim::Meetings::Meeting.where(feature: features)
       end
 
@@ -50,9 +47,14 @@ module Decidim
 
       def get_proposals_followers
         followers_ids = []
-        get_proposals.each{|p| followers_ids << p.follows.where.not(decidim_user_id: nil).map(&:decidim_user_id)}
-        followers = Decidim::User.where(id: followers_ids.flatten)
-        followers
+
+        get_proposals.each do |proposal|
+          if proposal.follows.any?
+            followers_ids << proposal.follows.map(&:user).map(&:id)
+          end
+        end
+
+        followers = Decidim::User.where(id: followers_ids)
       end
 
       def get_comment_author
@@ -66,19 +68,14 @@ module Decidim
       end
 
       def get_commentable
-
-        features = Decidim::Feature.where( participatory_space: @participatory_space).uniq
-
-        commentable_features = Decidim::Comments::Comment.all.map(&:root_commentable).map(&:feature)
-
         organization_users = @organization.users
-        root_commentable = Decidim::Comments::Comment.where(author: organization_users).map(&:root_commentable)
 
+        root_commentables = Decidim::Comments::Comment.where(author: organization_users).map(&:root_commentable)
 
         commentable = []
-        root_commentable.each do |rc|
-          if commentable_features.include?(rc.feature)
-            commentable << rc
+        root_commentables.each do |root_commentable|
+          if root_commentable.feature.participatory_space == @participatory_space
+            commentable << root_commentable
           end
         end
         commentable
