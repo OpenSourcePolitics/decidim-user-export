@@ -9,6 +9,6 @@ es:
       pages:
         export:
           show: Export
-    features:
+    components:
       export:
         name:  Export

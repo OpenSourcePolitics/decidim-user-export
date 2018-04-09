@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_dependency "decidim/features/namer"
+require_dependency "decidim/components/namer"
 
-Decidim.register_feature(:export) do |feature|
-  feature.engine = Decidim::Export::Engine
-  feature.engine = Decidim::Export::AdminEngine
-  feature.icon = "decidim/export/icon.svg"
+Decidim.register_component(:export) do |component|
+  component.engine = Decidim::Export::Engine
+  component.engine = Decidim::Export::AdminEngine
+  component.icon = "decidim/export/icon.svg"
 end

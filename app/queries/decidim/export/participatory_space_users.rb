@@ -24,8 +24,8 @@ module Decidim
       end
 
       def get_proposals
-        features = @participatory_space.features.where(manifest_name: :proposals)
-        Decidim::Proposals::Proposal.where(feature: features)
+        components = @participatory_space.components.where(manifest_name: :proposals)
+        Decidim::Proposals::Proposal.where(component: components)
       end
 
       def get_proposals_author
@@ -33,8 +33,8 @@ module Decidim
       end
 
       def get_meeting
-        features = @participatory_space.features.where(manifest_name: :meetings)
-        Decidim::Meetings::Meeting.where(feature: features)
+        components = @participatory_space.components.where(manifest_name: :meetings)
+        Decidim::Meetings::Meeting.where(component: components)
       end
 
       def get_attended_users
@@ -74,7 +74,7 @@ module Decidim
 
         commentable = []
         root_commentables.each do |root_commentable|
-          if root_commentable.feature.participatory_space == @participatory_space
+          if root_commentable.component.participatory_space == @participatory_space
             commentable << root_commentable
           end
         end

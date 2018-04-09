@@ -1,5 +1,5 @@
 base_locale: fr
 locales: [ca,es,fr,en]
 ignore_unused:
-- "decidim.features.export.name"
+- "decidim.components.export.name"
 - "decidim.export.*"
