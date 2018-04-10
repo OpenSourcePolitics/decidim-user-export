@@ -8,17 +8,17 @@ describe Decidim::Export::ParticipatorySpaceUsers do
   let(:participatory_process) { create(:participatory_process, organization: organization) }
   let(:assembly) { create :assembly, organization: organization }
   let(:participatory_space) { participatory_process }
-  let(:feature) { create(:feature, participatory_space: participatory_space) }
-  let(:proposal_feature) { create(:feature, organization: organization, manifest_name: "proposals", participatory_space: participatory_space) }
-  let(:meeting_feature) { create(:feature, manifest_name: "meetings", participatory_space: participatory_space) }
-  let(:meeting) { create(:meeting, feature: meeting_feature) }
+  let(:component) { create(:component, participatory_space: participatory_space) }
+  let(:proposal_component) { create(:component, organization: organization, manifest_name: "proposals", participatory_space: participatory_space) }
+  let(:meeting_component) { create(:component, manifest_name: "meetings", participatory_space: participatory_space) }
+  let(:meeting) { create(:meeting, component: meeting_component) }
 
   let(:participatory_process2) { create(:participatory_process, organization: organization) }
   let(:participatory_space2) { participatory_process2 }
-  let(:proposal_feature2) { create(:feature, organization: organization, manifest_name: "proposals", participatory_space: participatory_space2) }
-  let(:feature2) { create(:feature, participatory_space: participatory_space2) }
-  let(:meeting_feature2) { create(:feature, manifest_name: "meetings", participatory_space: participatory_space2) }
-  let(:meeting2) { create(:meeting, feature: meeting_feature2) }
+  let(:proposal_component2) { create(:component, organization: organization, manifest_name: "proposals", participatory_space: participatory_space2) }
+  let(:component2) { create(:component, participatory_space: participatory_space2) }
+  let(:meeting_component2) { create(:component, manifest_name: "meetings", participatory_space: participatory_space2) }
+  let(:meeting2) { create(:meeting, component: meeting_component2) }
 
   describe "when params participatory space is present" do
     subject { described_class.new(participatory_space, organization) }
@@ -26,11 +26,11 @@ describe Decidim::Export::ParticipatorySpaceUsers do
     context "for proposal" do
       before do
         @proposal_author = create(:user, organization: organization)
-        @proposal =  create(:proposal, feature: proposal_feature, author: @proposal_author)
+        @proposal =  create(:proposal, component: proposal_component, author: @proposal_author)
 
         # Partcipant from other participatory_space
         @proposal_author2 = create(:user, organization: organization)
-        @proposal2 =  create(:proposal, feature: proposal_feature2, author: @proposal_author2)
+        @proposal2 =  create(:proposal, component: proposal_component2, author: @proposal_author2)
 
       end
 
@@ -63,12 +63,12 @@ describe Decidim::Export::ParticipatorySpaceUsers do
 
     context "for comment" do
       before do
-        @commentable = create(:dummy_resource, feature: feature)
+        @commentable = create(:dummy_resource, component: component)
         @commenter = create(:user, organization: organization)
         @comment = @commentable.comments.create(body: "My comment", author: @commenter, root_commentable: @commentable)
 
         # Partcipant from other participatory_space
-        @commentable2 = create(:dummy_resource, feature: feature2)
+        @commentable2 = create(:dummy_resource, component: component2)
         @commenter2 = create(:user, organization: organization)
         @comment2 = @commentable2.comments.create(body: "My comment", author: @commenter2, root_commentable: @commentable2)
       end
@@ -112,7 +112,7 @@ describe Decidim::Export::ParticipatorySpaceUsers do
 
     it "get all users from organization" do
       proposal_author = create(:user, organization: organization)
-      proposal =  create(:proposal, feature: proposal_feature, author: proposal_author)
+      proposal =  create(:proposal, component: proposal_component, author: proposal_author)
 
       follower = create(:user, organization: organization)
       proposal.follows.create(user: follower)
@@ -120,7 +120,7 @@ describe Decidim::Export::ParticipatorySpaceUsers do
       proposal_voter = create(:user, organization: organization)
       proposal.votes.create(author: proposal_voter)
 
-      commentable = create(:dummy_resource, feature: feature)
+      commentable = create(:dummy_resource, component: component)
       commentable_author = commentable.author
       commenter = create(:user, organization: organization)
       comment = commentable.comments.create!(body: "My comment", author: commenter, root_commentable: commentable)
@@ -135,12 +135,12 @@ describe Decidim::Export::ParticipatorySpaceUsers do
 
       # Partcipant from other participatory_space
       proposal_author2 = create(:user, organization: organization)
-      proposal2 =  create(:proposal, feature: proposal_feature2, author: proposal_author2)
+      proposal2 =  create(:proposal, component: proposal_component2, author: proposal_author2)
       follower2 = create(:user, organization: organization)
       proposal2.follows.create(user: follower2)
       proposal_voter2 = create(:user, organization: organization)
       proposal2.votes.create(author: proposal_voter2)
-      commentable2 = create(:dummy_resource, feature: feature2)
+      commentable2 = create(:dummy_resource, component: component2)
       commentable_author2 = commentable2.author
       commenter2 = create(:user, organization: organization)
       comment2 = commentable2.comments.create(body: "My comment", author: commenter2, root_commentable: commentable2)

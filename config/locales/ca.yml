@@ -6,6 +6,6 @@ ca:
         export: Export
       title:
         export: Export
-    features:
+    components:
       export:
         name:  Export

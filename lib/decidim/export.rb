@@ -2,7 +2,7 @@
 require "decidim/export/admin"
 require "decidim/export/engine"
 require "decidim/export/admin_engine"
-require "decidim/export/feature"
+require "decidim/export/component"
 require 'csv'
 require 'rails/all'
 
